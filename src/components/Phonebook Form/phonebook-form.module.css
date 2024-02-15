@@ -1,0 +1,52 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: large;
+}
+
+.phoneWrap {
+    display: flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.contactsWrap {
+    display: flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.button {
+    margin-top: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: large;
+}
+
+.title {
+    font-weight: 800;
+    font-size: 30px;
+}
+
+.input {
+    border-radius: 10px;
+}
