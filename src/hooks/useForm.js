@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-const useForm = (initialState, onSubmit) => {
+const useForm = (initialState) => {
     const [state, setState] = useState({...initialState});
 
     const handleChange = useCallback(({target}) => {
@@ -11,17 +11,11 @@ const useForm = (initialState, onSubmit) => {
         }))
      }, []);
         
-    const handleSubmit = (e) => {
-            e.preventDefault();
-            onSubmit({...state});
-            reset();
-        };
-        
     const reset = useCallback (() => {
             setState({...initialState})
         }, [initialState]);
 
-    return {state, setState, handleChange, handleSubmit, reset}
+    return {state, setState, handleChange, reset}
 }
 
 export default useForm;

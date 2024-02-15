@@ -3,6 +3,11 @@ import { nanoid } from 'nanoid';
 
 import useForm from "hooks/useForm";
 
+import { useSelector, useDispatch } from "react-redux";
+
+import { addContact } from "../../redux/contacts/contacts-slice";
+import { getFilteredContacts } from "../../redux/contacts/contacts-selectors";
+
 import styles from "./phonebook-form.module.css";
 
 const INITIAL_STATE = {
@@ -10,22 +15,48 @@ const INITIAL_STATE = {
     number: ''
 }
 
-const PhonebookForm = ({onSubmit}) => {
-    const {state, handleChange, handleSubmit} = useForm(INITIAL_STATE, onSubmit)
+const PhonebookForm = () => {
+    const contacts = useSelector(getFilteredContacts);
+    const dispatch = useDispatch();   
+
+    const {state, handleChange, reset } = useForm(INITIAL_STATE)
  
     const contactId = useMemo(() => nanoid(), []);
     const numberId = useMemo(() => nanoid(), []);
 
+    const isDublicate = ({name, number}) => {
+        const normalizedName = name.toLowerCase();
+        const normalizedNumber = number.toLowerCase();
+
+        const dublicate = contacts.find(item => {
+            const normalizedCurrentName = item.name.toLowerCase();
+            const normalizedCurrentNumber = item.number.toLowerCase();
+            return (normalizedCurrentName === normalizedName || normalizedCurrentNumber === normalizedNumber);
+        })
+
+        return Boolean(dublicate);
+    }
+
+    const onAddContact = (e) => {
+        e.preventDefault()
+        if(isDublicate(state)) {
+            return alert(`You've already added ${state.name} or a number ${state.number} to your phonebook.`)
+        }
+
+        const action = addContact(state);
+        dispatch(action)
+        reset()
+    };
     
-        const {name, number} = state;
+    const {name, number} = state;
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={onAddContact} className={styles.form}>
             <div className={styles.phoneWrap}>
                 <h3 className={styles.title}>Phonebook</h3>
                 <div>
                     <label htmlFor={contactId} className={styles.label}>Name</label>
-                    <input className={styles.input} value={name} required name="name"  onChange={handleChange} id={contactId} type="text" placeholder="Enter a name" />
+                    <input className={styles.input} value={name} required name="name" onChange={handleChange} id={contactId} type="text" placeholder="Enter a name" />
                 </div>
         </div>
             <div className={styles.contactsWrap}>
